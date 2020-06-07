@@ -246,8 +246,12 @@ int playbackThreadLogic(SceSize args, void *argp)
 
             if(ksceIoRead(captureFile, &playbackHeader, sizeof(CaptureInfo)) == 0)              //The file has reached the end, there are no more inputs.
             {                                                                                   //TODO: error checking?
-                isPlaying = 0;
-                printf("[MAFU-I] Mafumafu is tired of singing. Reached EOF\n");
+                //isPlaying = 0;
+                printf("[MAFU-I] The song has ended. Reached EOF\n");
+                printf("[MAFU-I NONSTOP] But Mafumafu isn't tired yet, LET'S GOOOO!\n");
+                playbackStart = ksceKernelGetSystemTimeWide();
+                ksceIoLseek(captureFile, 0, SCE_SEEK_SET);
+                memset(&playbackHeader, 0, sizeof(CaptureInfo));
             }
             else
             {
